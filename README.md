@@ -5,7 +5,7 @@ Executable Python module for Zim Wiki to Markdown conversion.
 ## Command Line Interface
 
 ### Install
-LI
+
 Just have python3 for your default Python engine.
 
 ### Usage
