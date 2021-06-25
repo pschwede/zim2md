@@ -16,22 +16,22 @@ def __compatible(lines):
     convertible or not."""
     if len(lines) < 2:
         return False
-    if not fullmatch("^Content-Type: text/x-zim-wiki$", lines[0].strip()):
+    if not fullmatch(r"^Content-Type: text/x-zim-wiki$", lines[0].strip()):
         return False
-    if not fullmatch("^Wiki-Format: zim 0.[0-6]$", lines[1].strip()) is not None:
+    if not fullmatch(r"^Wiki-Format: zim 0\.[0-6]$", lines[1].strip()) is not None:
         return False
     return True
 
 
 def compatible(path=None, infile=None, lines=None):
     """Return True iff the given path points to a Zim Wiki file."""
-    if open is not None:
+    if path is not None:
         with open(path, "r") as _f:
-            return __compatible(_f.readlines()[4:])
+            return __compatible(_f.readlines()[:4])
     elif infile is not None:
-        return __compatible(infile.readlines()[4:])
+        return __compatible(infile.readlines()[:4])
     elif lines is not None:
-        return __compatible(lines[4:])
+        return __compatible(lines[:4])
     return True
 
 
@@ -74,5 +74,5 @@ if __name__ == "__main__":
     if compatible(lines=ls):
         sys.stdout.writelines(translate(text=ls))
     else:
-        sys.stderr.writelines(["FATAL: Incompatible file."])
+        sys.stderr.writelines(["FATAL: Incompatible file.\n"])
         sys.exit(1)
