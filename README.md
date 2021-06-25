@@ -1,6 +1,6 @@
 # zim2md
 
-Executable Python module for Zim Wiki to Markdown conversion.
+Executable Python module for [Zim Wiki](https://zim-wiki.org) to Markdown conversion.
 
 ## Command Line Interface
 
