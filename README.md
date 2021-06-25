@@ -1,6 +1,6 @@
 # zim2md
 
-Executable Python module for [Zim Wiki](https://zim-wiki.org) to Markdown conversion.
+Executable Python module for converting [Zim Wiki](https://zim-wiki.org) to Markdown.
 
 ## Command Line Interface
 
@@ -14,7 +14,7 @@ Just have python3 for your default Python engine.
 ./zim2md.py <input.file >output.file
 ```
 
-If you are on Windows, you may be required to your python engine in the command line. May be like so:
+If you are on Windows, you might be required to mention your python interpreter in the command line explicitly. May be like so:
 ```cmd
 C:\Programs\Python3.8\python3.exe zim2md.py <input.file >output.file
 ```
