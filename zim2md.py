@@ -8,7 +8,7 @@ Usage:
 """
 
 from typing import List
-from re import sub, fullmatch
+from re import sub, fullmatch, findall
 
 
 def __compatible(lines):
@@ -50,15 +50,33 @@ def translate(text: List[str], path:str = "") -> List[str]:
         line = sub(r"^=", "######", line)
 
         # Links
-        line = sub(r"\[\[(.+?)\|(.+?)\]\]", r"[\g<2>](\g<1>)", line)
-        line = sub(r"(?<=\[\[)\+([^+:]*)", sub(r"\..{2,4}$", "/", path) + r"\g<1>", line)
-        line = sub(r"(?<=\[\[)([^: ]*) ", r"\g<1>_", line)
-        line = sub(r"(?<=\[\[)([^\]]*):", r"\g<1>/", line)
-        line = sub(r"\[\[([^\]]+)\]\]", r"[\g<1>](\g<1>.txt)", line)
+        for link in findall(r"\[\[.+?\]\]", line):
+            label, target = None, None
+            tokens = link[2:-2].split("|")
+
+            if len(tokens) > 2:
+                # probably not a link.
+                continue
+
+            if len(tokens) == 2:
+                label, target = tokens
+            else:
+                label = tokens[0]
+                target = tokens[0]
+
+            if target[0] == '+':
+                target = path + "/" + target[1:] if path else target[1:]
+            target = target.replace(" ", "_")
+            target = target.replace(":", "/")
+            if not target.endswith(".txt") and not target.endswith(".md"):
+                target += ".txt" # txt is zim
+            line = line.replace(link, f"[{label}]({target})", 1)
+        line = sub(r"\+([A-Z]\s+)", r"[\g<1>](\g<1>)", line)
 
         # Lists
         line = sub(r"^(\s*)\[[*]\]", r"\g<1>- [x]", line, count=1)
         line = sub(r"^(\s*)\[[x]\]", r"\g<1>- [-]", line, count=1)
+        line = sub(r"^(\s*)\[[>]\]", r"\g<1>- [>]", line, count=1)
         line = sub(r"^(\s*)\[[ ]\]", r"\g<1>- [ ]", line, count=1)
         # TODO indented list elements without dots or checkboxes
 
