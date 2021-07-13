@@ -59,19 +59,19 @@ def translate(text: List[str], path:str = "") -> List[str]:
                 continue
 
             if len(tokens) == 2:
-                label, target = tokens
+                target, label = tokens
             else:
                 label = tokens[0]
                 target = tokens[0]
 
             if target[0] == '+':
-                target = path + "/" + target[1:] if path else target[1:]
-            target = target.replace(" ", "_")
-            target = target.replace(":", "/")
-            if not target.endswith(".txt") and not target.endswith(".md"):
-                target += ".txt" # txt is zim
+                target = path.replace(".txt", "") + "/" + target[1:] if path else target[1:]
+            if not target.startswith("http://") and not target.startswith("https://"):
+                target = target.replace(" ", "_")
+                target = target.replace(":", "/")
+                if not target.endswith(".txt") and not target.endswith(".md"):
+                    target += ".txt" # txt is zim
             line = line.replace(link, f"[{label}]({target})", 1)
-        line = sub(r"\+([A-Z]\s+)", r"[\g<1>](\g<1>)", line)
 
         # Lists
         line = sub(r"^(\s*)\[[*]\]", r"\g<1>- [x]", line, count=1)
