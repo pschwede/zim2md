@@ -45,8 +45,8 @@ git submodule add https://github.com/pschwede/zim2md.git zim2md
 
 ### Code example
 
-```python
-from zim2logseq import zim2logseq
+```python3
+from zim2md import zim2logseq
 
 with open("input.file", "r") as _f:
 	print(zim2logseq.translate(_f.readlines()))
